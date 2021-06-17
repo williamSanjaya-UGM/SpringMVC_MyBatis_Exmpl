@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.tstCrudApi.mapper.EmployeeMapper">
+
+    <select id="getAllEmployees" statementType="CALLABLE">
+        {call GET_ALL_EMPLOYEES_JAVA2(
+            #{startFrom, jdbcType=NUMERIC, mode=IN},
+            #{until, jdbcType=NUMERIC,mode=IN},
+            #{employeeList, jdbcType=CURSOR, mode=OUT,javaType=java.sql.ResultSet, resultMap=/mapper/EmployeeResultMap.empResult}
+            )}
+    </select>
+
+    <select id="getEmpById" statementType="CALLABLE" >
+        {call GET_ALL_EMPBYID_JAVA(
+            #{id, jdbcType=NUMERIC, mode=IN},
+            #{result, mode=OUT,javaType=java.sql.ResultSet,jdbcType=CURSOR,resultMap=/mapper/EmployeeResultMap.empResult}
+            )}
+    </select>
+
+    <insert id="addEmployee" statementType="CALLABLE" >
+        {call INSERT_UPDATE_EMP(
+            #{data, mode=IN,javaType=Object,jdbcType=ARRAY,typeHandler=com.example.tstCrudApi.entity.EmployeeHandler},
+            #{nik, jdbcType=VARCHAR, mode=IN}
+        )}
+    </insert>
+
+    <select id="deleteByNik" statementType="CALLABLE" >
+        {call DELETE_EMP_BYID(
+            #{nik, jdbcType=VARCHAR, mode=IN}
+        )}
+    </select>
+</mapper>
